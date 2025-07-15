@@ -1,6 +1,7 @@
 package log
 
 import (
+	"context"
 	"sync"
 	"time"
 
@@ -12,6 +13,7 @@ type Logger interface {
 	Debugw(msg string, keysAndValues ...interface{})
 	Infow(msg string, keysAndValues ...interface{})
 	Errorw(msg string, keysAndValues ...interface{})
+	Fatalw(msg string, keysAndValues ...interface{})
 	Sync()
 }
 
@@ -103,4 +105,26 @@ func Errorw(msg string, keysAndValues ...interface{}) {
 
 func (l *zapLogger) Errorw(msg string, keysAndValues ...interface{}) {
 	l.z.Sugar().Errorw(msg, keysAndValues...)
+}
+
+func Fatalw(msg string, keysAndValues ...interface{}) {
+	std.z.Sugar().Fatalw(msg, keysAndValues...)
+}
+
+func (l *zapLogger) Fatalw(msg string, keysAndValues ...interface{}) {
+	l.z.Sugar().Fatalw(msg, keysAndValues...)
+}
+
+func C(ctx context.Context) *zapLogger {
+	return std.C(ctx)
+}
+
+func (l *zapLogger) C(ctx context.Context) *zapLogger {
+	lc := l.clone()
+	return lc
+}
+
+func (l *zapLogger) clone() *zapLogger {
+	lc := *l
+	return &lc
 }
