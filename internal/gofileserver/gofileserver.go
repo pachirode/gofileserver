@@ -11,10 +11,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/marmotedu/Miniblog/pkg/version/verflag"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/pachirode/gofileserver/internal/gofileserver/staticserver"
 	"github.com/pachirode/gofileserver/internal/pkg/log"
 )
 
@@ -47,20 +47,19 @@ func NewGofileserverCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "The path to the go file server configurate.")
 	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	verflag.AddFlags(cmd.PersistentFlags())
-
 	return cmd
 }
 
 func run() error {
 	if err := initStore(); err != nil {
-		log.Errorw("Connect db failed", "err", err.Error())
 		return nil
 	}
 
 	g := gin.New()
 
-	if err := installRouters(g); err != nil {
+	gcfg := configurationOptions()
+
+	if err := staticserver.InstallRouters(g, gcfg); err != nil {
 		return err
 	}
 

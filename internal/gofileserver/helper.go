@@ -52,20 +52,23 @@ func logOptions() *log.Options {
 
 func configurationOptions() *config.Options {
 	return &config.Options{
-		Addr:          viper.GetString("web.addr"),
-		Title:         viper.GetString("web.title"),
-		Theme:         viper.GetString("web.theme"),
-		Debug:         viper.GetBool("web.debug"),
-		XHeaders:      viper.GetBool("web.xheaders"),
-		Upload:        viper.GetBool("web.upload"),
-		Delete:        viper.GetBool("web.delete"),
-		NoAccess:      viper.GetBool("web.noaccess"),
-		AdminUsername: viper.GetString("web.admin_username"),
-		AdminPassword: viper.GetString("web.admin_password"),
-		AdminEmail:    viper.GetString("web.admin_email"),
-		Root:          viper.GetString("web.root"),
-		SimpleAuth:    viper.GetBool("web.simpleauth"),
-		HttpAuth:      viper.GetString("auth.http"),
+		Addr:            viper.GetString("web.addr"),
+		AdminUsername:   viper.GetString("web.admin_username"),
+		AdminPassword:   viper.GetString("web.admin_password"),
+		AdminEmail:      viper.GetString("web.admin_email"),
+		Debug:           viper.GetBool("web.debug"),
+		Delete:          viper.GetBool("web.delete"),
+		GoogleTrackerID: viper.GetString("web.google_tracer_id"),
+		HttpAuth:        viper.GetString("auth.http"),
+		NoAccess:        viper.GetBool("web.noaccess"),
+		NoIndex:         viper.GetBool("web.no_index"),
+		Prefix:          viper.GetString("web.prefix"),
+		Root:            viper.GetString("web.root"),
+		SimpleAuth:      viper.GetBool("web.simpleauth"),
+		Title:           viper.GetString("web.title"),
+		Theme:           viper.GetString("web.theme"),
+		Upload:          viper.GetBool("web.upload"),
+		XHeaders:        viper.GetBool("web.xheaders"),
 	}
 }
 

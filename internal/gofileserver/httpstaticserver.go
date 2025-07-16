@@ -37,7 +37,5 @@ func (s *HTTPStaticServer) Index(ctx *gin.Context) {
 	log.Infow("Index function called")
 	path := ctx.Request.URL.Path
 	realPath := s.getRealPath(path)
-	println("============================")
 	println(realPath)
-	println("============================")
 }

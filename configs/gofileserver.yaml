@@ -11,8 +11,11 @@ web:
   admin_username: admin
   admin_password: admin
   admin_emial: admin@test.com
-  root: /home/goer/fileserver
+  root: /home/goer/httpserver
+  google_tracer_id: UA-783218139-1
+  no_index: false
   simpleauth: true
+  prefix:
 
 auth:
   type: http

@@ -3,19 +3,22 @@ package config
 import "os"
 
 type Options struct {
-	Conf          *os.File
-	Addr          string
-	Title         string
-	AdminUsername string
-	AdminPassword string
-	AdminEmail    string
-	Root          string
-	HttpAuth      string
-	SimpleAuth    bool
-	Theme         string
-	XHeaders      bool
-	Upload        bool
-	Delete        bool
-	NoAccess      bool
-	Debug         bool
+	Addr            string
+	AdminEmail      string
+	AdminUsername   string
+	AdminPassword   string
+	Conf            *os.File
+	Delete          bool
+	Debug           bool
+	GoogleTrackerID string
+	HttpAuth        string
+	NoIndex         bool
+	NoAccess        bool
+	Prefix          string
+	Root            string
+	SimpleAuth      bool
+	Theme           string
+	Title           string
+	Upload          bool
+	XHeaders        bool
 }
