@@ -50,6 +50,11 @@ func (s *HTTPStaticServer) Index(ctx *gin.Context) {
 		return
 	}
 
+	if ctx.Query("op") == "archive" {
+		s.Zip(ctx)
+		return
+	}
+
 	if ctx.Query("raw") == "false" || isDir(realPath) {
 		renderHTML(ctx, "assets/index.html", s)
 	}
