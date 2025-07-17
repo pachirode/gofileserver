@@ -18,6 +18,7 @@ func InstallRouters(g *gin.Engine, gcfg *config.Options) error {
 	g.GET("/-/sysinfo", ss.SysInfo)
 	g.GET("/-/assets/*filepath", ss.StaticFiles)
 	g.GET("/+/*path", ss.Index)
+	g.POST("/+/*path", ss.UploadOrMkdir)
 
 	return nil
 }

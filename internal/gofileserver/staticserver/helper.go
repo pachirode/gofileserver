@@ -1,11 +1,19 @@
 package staticserver
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 )
+
+func checkFilename(filename string) error {
+	if strings.ContainsAny(filename, "\\/:*<>|") {
+		return errors.New("Name should not contain \\/:*<>|")
+	}
+	return nil
+}
 
 func sanitizedName(filename string) string {
 	if len(filename) > 1 && filename[1] == ':' && runtime.GOOS == "windows" {

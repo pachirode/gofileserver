@@ -84,6 +84,12 @@ func (s *HTTPStaticServer) JSONList(ctx *gin.Context) {
 
 	ctx.JSON(200, gin.H{
 		"files": lrs,
+		"auth": map[string]interface{}{
+			"upload":       true,
+			"delete":       true,
+			"users":        nil,
+			"AccessTables": nil,
+		},
 	})
 }
 
