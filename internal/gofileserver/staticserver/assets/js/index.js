@@ -264,7 +264,7 @@ var vm = new Vue({
     showInfo: function (f) {
       console.log(f);
       $.ajax({
-        url: this.getEncodePath(f.name),
+        url: "/+" + this.getEncodePath(f.name),
         data: {
           op: "info",
         },
