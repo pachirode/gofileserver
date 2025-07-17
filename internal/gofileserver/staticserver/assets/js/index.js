@@ -245,6 +245,10 @@ var vm = new Vue({
         if (videoExtensions.includes(fileExtension)) {
           window.location.href = '/-/video-player' + reqPath;
         } else {
+
+          if (!reqPath.startsWith("/+")) {
+            reqPath = "/+" + reqPath
+          }
           window.location.href = reqPath;
         }
         e.preventDefault()
@@ -318,6 +322,7 @@ var vm = new Vue({
     },
     updateBreadcrumb: function (pathname) {
       var pathname = decodeURI(pathname || location.pathname || "/");
+      pathname = pathname.replace(/\/\+/, '');
       pathname = pathname.split('?')[0]
       var parts = pathname.split('/');
       this.breadcrumb = [];
@@ -377,6 +382,9 @@ window.onpopstate = function (event) {
 }
 
 function loadFileOrDir(reqPath) {
+  if (!reqPath.startsWith("/+")) {
+    reqPath = "/+" + reqPath
+  }
   let requestUri = reqPath + location.search
   var retObj = loadFileList(requestUri)
   if (retObj !== null) {

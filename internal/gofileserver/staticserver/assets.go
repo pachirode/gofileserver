@@ -54,7 +54,6 @@ func renderHTML(ctx *gin.Context, name string, v interface{}) {
 		if err := tmpl.Execute(ctx.Writer, v); err != nil {
 			log.Errorw("Render HTML failed", "err", err.Error())
 		}
-		//	ctx.HTML(http.StatusOK, name, v)
 		return
 	}
 
@@ -63,5 +62,10 @@ func renderHTML(ctx *gin.Context, name string, v interface{}) {
 	if err := tmpl.Execute(ctx.Writer, v); err != nil {
 		log.Errorw("Render HTML failed", "err", err.Error())
 	}
-	// ctx.HTML(http.StatusOK, name, v)
+}
+
+func (s *HTTPStaticServer) StaticFiles(ctx *gin.Context) {
+	filepath := ctx.Param("filepath")
+	ctx.Request.URL.Path = "/assets" + filepath
+	http.FileServer(Assets).ServeHTTP(ctx.Writer, ctx.Request)
 }

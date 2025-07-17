@@ -38,5 +38,24 @@ func (s *HTTPStaticServer) makeIndex() error {
 
 func (s *HTTPStaticServer) Index(ctx *gin.Context) {
 	log.Infow("Index function called")
-	renderHTML(ctx, "assets/index.html", s)
+	requestPath := ctx.Request.URL.Path
+	realPath := s.getRealPath(requestPath)
+	if ctx.Query("json") == "true" {
+		s.JSONList(ctx)
+		return
+	}
+
+	if ctx.Query("raw") == "false" || isDir(realPath) {
+		renderHTML(ctx, "assets/index.html", s)
+	}
+
+	if ctx.Query("download") == "true" {
+		s.Download(ctx)
+	}
+}
+
+func (s *HTTPStaticServer) SysInfo(ctx *gin.Context) {
+	ctx.JSON(200, gin.H{
+		"version": "unkonw",
+	})
 }

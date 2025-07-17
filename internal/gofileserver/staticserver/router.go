@@ -4,22 +4,20 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/pachirode/gofileserver/internal/pkg/config"
-	"github.com/pachirode/gofileserver/internal/pkg/core"
-	"github.com/pachirode/gofileserver/internal/pkg/log"
+	mw "github.com/pachirode/gofileserver/internal/pkg/middleware"
 )
 
 func InstallRouters(g *gin.Engine, gcfg *config.Options) error {
-	g.StaticFS("/-/", Assets)
+	mws := []gin.HandlerFunc{gin.Recovery(), mw.Cors, mw.NoCache}
 
-	g.GET("/test", func(ctx *gin.Context) {
-		log.C(ctx).Infow("Test function called")
-
-		core.WriteResponse(ctx, nil, map[string]string{"status": "ok"})
-	})
+	g.Use(mws...)
 
 	ss := NewHTTPStaticServer(gcfg)
 
 	g.GET("/", ss.Index)
+	g.GET("/-/sysinfo", ss.SysInfo)
+	g.GET("/-/assets/*filepath", ss.StaticFiles)
+	g.GET("/+/*path", ss.Index)
 
 	return nil
 }
