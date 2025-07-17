@@ -1,6 +1,7 @@
 package staticserver
 
 import (
+	"net/http"
 	"os"
 	"path/filepath"
 
@@ -17,7 +18,6 @@ func (s *HTTPStaticServer) makeIndex() error {
 	indexes := make([]IndexFileItem, 0)
 	err := filepath.Walk(s.Root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			println("Root: ", s.Root)
 			log.Errorw("Visit path err", "err", err.Error())
 			return filepath.SkipDir
 		}
@@ -45,6 +45,11 @@ func (s *HTTPStaticServer) Index(ctx *gin.Context) {
 		return
 	}
 
+	if ctx.Query("op") == "info" {
+		s.Info(ctx)
+		return
+	}
+
 	if ctx.Query("raw") == "false" || isDir(realPath) {
 		renderHTML(ctx, "assets/index.html", s)
 	}
@@ -52,6 +57,7 @@ func (s *HTTPStaticServer) Index(ctx *gin.Context) {
 	if ctx.Query("download") == "true" {
 		s.Download(ctx)
 	}
+	http.ServeFile(ctx.Writer, ctx.Request, realPath)
 }
 
 func (s *HTTPStaticServer) SysInfo(ctx *gin.Context) {
