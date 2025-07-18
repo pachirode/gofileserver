@@ -82,9 +82,13 @@ var vm = new Vue({
       // console.log(this.previewFile)
       if (this.preview.filename) {
         var name = this.preview.filename; // For now only README.md
-        console.log(pathJoin([location.pathname, 'README.md']))
+        var _pathname = location.pathname
+        if (!_pathname.startsWith("/-") && !_pathname.startsWith("/+")) {
+            _pathname = "/+" + _pathname
+        }
+        console.log(pathJoin([_pathname, 'README.md']))
         $.ajax({
-          url: pathJoin([location.pathname, 'README.md']),
+          url: pathJoin([_pathname, 'README.md']),
           method: 'GET',
           success: function (res) {
             var converter = new showdown.Converter({
@@ -101,6 +105,7 @@ var vm = new Vue({
             });
 
             var html = converter.makeHtml(res);
+            console.log("preview HTML: " + html)
             that.preview.contentHTML = html;
           },
           error: function (err) {
@@ -169,7 +174,11 @@ var vm = new Vue({
     },
     genInstallURL: function (name, noEncode) {
       var parts = [location.host];
-      var pathname = decodeURI(location.pathname);
+      var _pathname = location.pathname
+      if (!_pathname.startsWith("/-") && !_pathname.startsWith("/+")) {
+          _pathname = "/+" + _pathname
+      }
+      var pathname = decodeURI(_pathname);
       if (!name) {
         parts.push(pathname);
       } else if (getExtention(name) == "ipa") {
@@ -194,7 +203,7 @@ var vm = new Vue({
     genDownloadURL: function (f) {
       var search = location.search;
       var sep = search == "" ? "?" : "&"
-      return location.origin + "/+" +this.getEncodePath(f.name) + location.search + sep + "download=true";
+      return location.origin + this.getEncodePath(f.name) + location.search + sep + "download=true";
     },
     shouldHaveQrcode: function (name) {
       return ['apk', 'ipa'].indexOf(getExtention(name)) !== -1;
@@ -250,7 +259,7 @@ var vm = new Vue({
           window.location.href = '/-/video-player' + reqPath;
         } else {
 
-          if (!reqPath.startsWith("/+")) {
+          if (!reqPath.startsWith("/+") && !reqPath.startsWith("/-")) {
             reqPath = "/+" + reqPath
           }
           window.location.href = reqPath;
@@ -324,7 +333,11 @@ var vm = new Vue({
       });
     },
     updateBreadcrumb: function (pathname) {
-      var pathname = decodeURI(pathname || location.pathname || "/");
+      var _pathname = location.pathname
+      if (!_pathname.startsWith("/-") && !_pathname.startsWith("/+")) {
+          _pathname = "/+" + _pathname
+      }
+      var pathname = decodeURI(pathname || _pathname || "/");
       pathname = pathname.replace(/\/\+/, '');
       pathname = pathname.split('?')[0]
       var parts = pathname.split('/');
@@ -353,7 +366,6 @@ var vm = new Vue({
       var that = this;
       $.getJSON(pathJoin(['/-/info', location.pathname]))
           .then(function (res) {
-            console.log(res);
             that.preview.filename = res.name;
             that.preview.filesize = res.size;
             return $.ajax({
@@ -385,7 +397,7 @@ window.onpopstate = function (event) {
 }
 
 function loadFileOrDir(reqPath) {
-  if (!reqPath.startsWith("/+")) {
+  if (!reqPath.startsWith("/+") && !reqPath.startsWith("/-")  ) {
     reqPath = "/+" + reqPath
   }
   let requestUri = reqPath + location.search
@@ -399,7 +411,12 @@ function loadFileOrDir(reqPath) {
 }
 
 function loadFileList(pathname) {
-  var pathname = pathname || location.pathname + location.search;
+
+  var _pathname = location.pathname
+  if (!_pathname.startsWith("/-") && !_pathname.startsWith("/+")) {
+      _pathname = "/+" + _pathname
+  }
+  var pathname = pathname || _pathname + location.search;
   var retObj = null
   if (getQueryString("raw") !== "false") { // not a file preview
     var sep = pathname.indexOf("?") === -1 ? "?" : "&"
@@ -449,7 +466,12 @@ $(function () {
   });
 
   // For page first loading
-  loadFileList(location.pathname + location.search)
+
+  var _pathname = location.pathname
+  if (!_pathname.startsWith("/-") && !_pathname.startsWith("/+")) {
+      _pathname = "/+" + _pathname
+  }
+  loadFileList(_pathname + location.search)
 
   // update version
   $.getJSON("/-/sysinfo", function (res) {
