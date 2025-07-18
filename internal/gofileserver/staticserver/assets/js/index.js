@@ -281,8 +281,7 @@ var vm = new Vue({
       })
     },
     makeDirectory: function () {
-      var name = window.prompt("current path: " + location.pathname + "\nplease enter the new directory name", "")
-      console.log(name)
+      var name = window.prompt("current path: " + location.pathname.replace(/\/\+/, "") + "\nplease enter the new directory name", "")
       if (!name) {
         return
       }
@@ -310,7 +309,7 @@ var vm = new Vue({
         }
       }
       $.ajax({
-        url: this.getEncodePath(f.name),
+        url: "/+" + this.getEncodePath(f.name),
         method: 'DELETE',
         success: function (res) {
           loadFileList()
