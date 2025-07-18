@@ -141,7 +141,11 @@ var vm = new Vue({
   },
   methods: {
     getEncodePath: function (filepath) {
-      return pathJoin([location.pathname].concat(filepath.split("/").map(v => encodeURIComponent(v))))
+      var _pathname = location.pathname
+      if (!_pathname.startsWith("/-") && !_pathname.startsWith("/+")) {
+          _pathname = "/+" + _pathname
+      }
+      return pathJoin([_pathname].concat(filepath.split("/").map(v => encodeURIComponent(v))))
     },
     formatTime: function (timestamp) {
       var m = moment(timestamp);
