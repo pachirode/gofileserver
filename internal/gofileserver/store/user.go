@@ -4,8 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/pachirode/gofileserver/internal/pkg/models"
 	"gorm.io/gorm"
+
+	"github.com/pachirode/gofileserver/internal/pkg/models"
 )
 
 type UserStore interface {

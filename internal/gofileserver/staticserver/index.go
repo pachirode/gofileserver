@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/pachirode/gofileserver/internal/pkg/log"
 )
 

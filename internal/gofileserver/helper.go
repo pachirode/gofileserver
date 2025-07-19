@@ -73,6 +73,9 @@ func configurationOptions() *config.Options {
 }
 
 func initStore() error {
+	if !viper.GetBool("db.enable") {
+		return nil
+	}
 	dbOptions := &db.MysqlOptions{
 		Host:                  viper.GetString("db.host"),
 		Username:              viper.GetString("db.username"),

@@ -16,6 +16,7 @@ import (
 
 	"github.com/pachirode/gofileserver/internal/gofileserver/staticserver"
 	"github.com/pachirode/gofileserver/internal/pkg/log"
+	"github.com/pachirode/gofileserver/pkg/version/verflag"
 )
 
 var cfgFile string
@@ -26,6 +27,7 @@ func NewGofileserverCommand() *cobra.Command {
 		Short:        "A mini go file server",
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			verflag.PrintAndExitIfRequested()
 			log.Init(logOptions())
 			defer log.Sync()
 

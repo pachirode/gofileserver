@@ -22,6 +22,7 @@ auth:
   http: admin:admin
 
 db:
+  enable: false
   host: 127.0.0.1  # MySQL 机器 IP 和端口，默认 127.0.0.1:3306
   username: httpserver # MySQL 用户名(建议授权最小权限集)
   password: httpserver123 # MySQL 用户密码

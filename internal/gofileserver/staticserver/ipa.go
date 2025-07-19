@@ -14,6 +14,7 @@ import (
 
 	goplist "github.com/fork2fix/go-plist"
 	"github.com/gin-gonic/gin"
+
 	"github.com/pachirode/gofileserver/internal/pkg/core"
 )
 

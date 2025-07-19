@@ -1,12 +1,25 @@
-SHELL := /bin/bash
-VERSION = 0.0.0
+.DEFAULT_GOAL := all
 
-COMMON_SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
-ROOT_DIR := $(abspath $(shell cd $(COMMON_SELF_DIR)/ && pwd -P))
-OUTPUT_DIR := $(ROOT_DIR)/_output
+.PHONY: all
+all: go.format go.build
 
-server:
-	@go build -v -o $(OUTPUT_DIR)/gofileserver $(ROOT_DIR)/cmd/gofileserver/main.go
+include scripts/make-rules/common.mk
+include scripts/make-rules/tools.mk
+include scripts/make-rules/golang.mk
 
+.PHONY: build
+build: go.tidy
+	@$(MAKE) go.build
+
+.PHONY: clean
 clean:
+	@echo "==========> Cleaning all build output"
 	@-rm -vrf $(OUTPUT_DIR)
+
+.PHONY: format
+format:
+	@$(MAKE) go.format
+
+.PHONY: tidy
+tidy:
+	@$(MAKE) go.tidy

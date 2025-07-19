@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/pachirode/gofileserver/internal/pkg/core"
 	"github.com/pachirode/gofileserver/internal/pkg/log"
 )
